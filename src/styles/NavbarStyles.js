@@ -1,6 +1,8 @@
+import { indigo } from '@mui/material/colors';
+
 const navStyles = {
     appbar:{
-        bgcolor:'primary.dark',
+        bgcolor:indigo[900],
     },
     switch:{
         color:'red'
