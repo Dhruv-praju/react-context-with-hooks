@@ -14,9 +14,9 @@ class PageContent extends Component {
                 width:'100vw'
             },
             dark:{
-                backgroundColor: '#00042bd6',
+                backgroundColor: '#00042be0',
                 height:'100vh',
-                width:'100vw'
+                width:'100%'
             }
         }
         return (

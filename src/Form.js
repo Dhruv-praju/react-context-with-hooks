@@ -18,14 +18,46 @@ import Select from '@mui/material/Select';
 import { indigo } from '@mui/material/colors';
 import { Paper } from '@mui/material';
 
-class Form extends Component {
-    state={
-        language:'English'
+import { LanguageContext } from './contexts/LanguageContext';
+
+const words = {
+    english:{
+        email:'Email Address',
+        password: 'Password',
+        remember:'Remember me',
+        signIn:'Sign In',
+        forgotPaswd: 'Forgot password ?',
+        askSignUp:"Don't have an account? Sign Up"
+    },
+    french:{
+        email:'Adresse Electronique',
+        password: 'Mot de Passe',
+        remember:'Souviens-toi de moi',
+        signIn:'Se Connecter',
+        forgotPaswd: 'Mot de passe oublié ?',
+        askSignUp:"Vous n'avez pas de compte ? Signer"
+    },
+    spanish:{
+        email:'Correo Electrónico',
+        password: 'Contraseña',
+        remember:'Recuérdame',
+        signIn:'Registrarse',
+        forgotPaswd: 'Has olvidado tu contraseña ?',
+        askSignUp:'Aún no tienes una cuenta? inscribirse'
     }
+}
+
+class Form extends Component {
+    static contextType = LanguageContext
+    state={
+        language:'english'
+    }
+
     handleChange = (e)=>{
-        this.setState({
+        this.setState(st=>({
             language: e.target.value
-        })
+        }))
+        this.context.changeLanguage(e.target.value)
     }
     render() {
         const handleSubmit = (event) => {
@@ -37,7 +69,10 @@ class Form extends Component {
             password: data.get('password'),
           });
         };
-      
+        // console.log(this.context);
+        const {language} = this.context
+        const {email, password, remember, signIn, forgotPaswd, askSignUp} = words[language]
+
         return (
             <Container component="main" maxWidth="xs">
               <Paper elevation={3} sx={{bgcolor:'white', px:3, pb:2}}>
@@ -54,12 +89,11 @@ class Form extends Component {
                     <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                    Sign in
+                    {signIn}
                     </Typography>
 
                     <Box sx={{ maxWidth: 220, mt:2 }}>
                         <FormControl variant='standard' fullWidth>
-                            <InputLabel id="demo-simple-select-label">Language</InputLabel>
                             <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -67,9 +101,9 @@ class Form extends Component {
                             label="Language"
                             onChange={this.handleChange}
                             >
-                            <MenuItem value='English'>English</MenuItem>
-                            <MenuItem value='French'>French</MenuItem>
-                            <MenuItem value='Spanish'>Spanish</MenuItem>
+                            <MenuItem value='english'>English</MenuItem>
+                            <MenuItem value='french'>French</MenuItem>
+                            <MenuItem value='spanish'>Spanish</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
@@ -80,7 +114,7 @@ class Form extends Component {
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
+                        label={email}
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -90,14 +124,14 @@ class Form extends Component {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={password}
                         type="password"
                         id="password"
                         autoComplete="current-password"
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
+                        label={remember}
                     />
                     <Button
                         type="submit"
@@ -105,17 +139,17 @@ class Form extends Component {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 , bgcolor:indigo[900], '&:hover': {bgcolor:indigo[700]}}}
                     >
-                        Sign In
+                        {signIn}
                     </Button>
                     <Grid container>
                         <Grid item xs>
                         <Link href="#" variant="body2">
-                            Forgot password?
+                            {forgotPaswd}
                         </Link>
                         </Grid>
                         <Grid item>
                         <Link href="#" variant="body2">
-                            {"Don't have an account? Sign Up"}
+                            {askSignUp}
                         </Link>
                         </Grid>
                     </Grid>
