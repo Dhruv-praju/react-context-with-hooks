@@ -14,6 +14,7 @@ import InputBase from '@mui/material/InputBase';
 import navStyles from './styles/NavbarStyles';
 
 import { ThemeContext } from './contexts/ThemeContext';
+import { withLanguageContext } from './contexts/LanguageContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,12 +58,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const content = {
+  english:{
+    flag:'🇬🇧',
+    search:'Search'    
+  },
+  french:{
+    flag:'🇫🇷',
+    search:'Chercher'
+  },
+  spanish:{
+    flag:'🇪🇸',
+    search:'Búsqueda'
+  }
+}
 
 class Navbar extends Component {
   static contextType = ThemeContext
     render() {
       // console.log(this.context);
       const {isDarkMode, toggleTheme} = this.context
+      const {language} = this.props.languageContext
+      // console.log(language);
+      const {flag, search} = content[language]
         return (
             <div>
                 <Box sx={{ flexGrow: 1 }}>
@@ -77,7 +95,7 @@ class Navbar extends Component {
                             aria-label="menu"
                             sx={{ mr: 2 }}
                         >
-                            <span>🇫🇷</span>
+                            <span>{flag}</span>
                         </IconButton>
                         <Typography variant="h6" component="div" sx={navStyles.title}>
                             {isDarkMode ? 'Dark' : 'Light'}
@@ -89,7 +107,7 @@ class Navbar extends Component {
                             <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
-                            placeholder="Search…"
+                            placeholder={`${search}...`}
                             inputProps={{ 'aria-label': 'search' }}
                             />
                         </Search>
@@ -102,4 +120,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar
+export default withLanguageContext(Navbar)

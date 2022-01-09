@@ -21,4 +21,12 @@ class LanguageProvider extends Component{
     }
 }
 
-export {LanguageContext, LanguageProvider}
+// Higher Order Component (a component which operates on other components)
+// make function which takes Component as an argument and returns that same Component wrapped with Context.consumer so that context data can be accessed
+const withLanguageContext = Component => props => (
+    <LanguageContext.Consumer>
+        {value => <Component languageContext={value} {...props} />}
+    </LanguageContext.Consumer>
+)
+
+export {LanguageContext, LanguageProvider, withLanguageContext}
