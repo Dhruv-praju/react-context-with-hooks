@@ -13,6 +13,8 @@ import InputBase from '@mui/material/InputBase';
 
 import navStyles from './styles/NavbarStyles';
 
+import { ThemeContext } from './contexts/ThemeContext';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -55,12 +57,18 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
 class Navbar extends Component {
+  static contextType = ThemeContext
     render() {
+      // console.log(this.context);
+      const {isDarkMode, toggleTheme} = this.context
         return (
             <div>
                 <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static" sx={navStyles.appbar} >
+                    <AppBar 
+                      position="static" 
+                      sx={isDarkMode ? navStyles.appbarDark : navStyles.appbarLight} >
                         <Toolbar>
                         <IconButton
                             size="small"
@@ -72,10 +80,9 @@ class Navbar extends Component {
                             <span>🇫🇷</span>
                         </IconButton>
                         <Typography variant="h6" component="div" sx={navStyles.title}>
-                            App Title
+                            {isDarkMode ? 'Dark' : 'Light'}
                         </Typography>
-                        <Switch color='warning'/>
-
+                        <Switch color='warning' onChange={toggleTheme}/>
 
                         <Search style={{marginLeft:'auto'}}>
                             <SearchIconWrapper>
