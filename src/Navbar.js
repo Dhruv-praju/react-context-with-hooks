@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,7 +14,7 @@ import InputBase from '@mui/material/InputBase';
 import navStyles from './styles/NavbarStyles';
 
 import { ThemeContext } from './contexts/ThemeContext';
-import { withLanguageContext } from './contexts/LanguageContext';
+import { LanguageContext } from './contexts/LanguageContext';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -73,51 +73,61 @@ const content = {
   }
 }
 
-class Navbar extends Component {
-  static contextType = ThemeContext
-    render() {
-      // console.log(this.context);
-      const {isDarkMode, toggleTheme} = this.context
-      const {language} = this.props.languageContext
-      // console.log(language);
-      const {flag, search} = content[language]
-        return (
-            <div>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar 
-                      position="static" 
-                      sx={isDarkMode ? navStyles.appbarDark : navStyles.appbarLight} >
-                        <Toolbar>
-                        <IconButton
-                            size="small"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}
-                        >
-                            <span>{flag}</span>
-                        </IconButton>
-                        <Typography variant="h6" component="div" sx={navStyles.title}>
-                            {isDarkMode ? 'Dark' : 'Light'}
-                        </Typography>
-                        <Switch color='warning' onChange={toggleTheme}/>
+// class Navbar extends Component {
+//   static contextType = ThemeContext
+//     render() {
+//       // console.log(this.context);
+//       const {isDarkMode, toggleTheme} = this.context
+//       const {language} = this.props.languageContext
+//       // console.log(language);
+//       const {flag, search} = content[language]
+//         return (
+            
+//         )
+//     }
+// }
 
-                        <Search style={{marginLeft:'auto'}}>
-                            <SearchIconWrapper>
-                            <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                            placeholder={`${search}...`}
-                            inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
-                        
-                        </Toolbar>
-                    </AppBar>
-                </Box>
-            </div>
-        )
-    }
+function Navbar(props) {
+
+  const {isDarkMode, toggleTheme} = useContext(ThemeContext)
+  const {language, changeLanguage} = useContext(LanguageContext)
+  const {flag, search} = content[language]
+
+  return (
+    <div>
+      <Box sx={{ flexGrow: 1 }}>
+          <AppBar 
+            position="static" 
+            sx={isDarkMode ? navStyles.appbarDark : navStyles.appbarLight} >
+              <Toolbar>
+              <IconButton
+                  size="small"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ mr: 2 }}
+              >
+                  <span>{flag}</span>
+              </IconButton>
+              <Typography variant="h6" component="div" sx={navStyles.title}>
+                  {isDarkMode ? 'Dark' : 'Light'}
+              </Typography>
+              <Switch color='warning' onChange={toggleTheme}/>
+
+              <Search style={{marginLeft:'auto'}}>
+                  <SearchIconWrapper>
+                  <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                  placeholder={`${search}...`}
+                  inputProps={{ 'aria-label': 'search' }}
+                  />
+              </Search>
+              
+              </Toolbar>
+          </AppBar>
+      </Box>
+    </div>
+  )
 }
-
-export default withLanguageContext(Navbar)
+export default Navbar

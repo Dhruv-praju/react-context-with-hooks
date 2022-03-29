@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import Reac, {useState, useContext} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -47,34 +47,13 @@ const words = {
     }
 }
 
-class Form extends Component {
-    static contextType = LanguageContext
-    state={
-        language:'english'
-    }
+function Form(props){
+    const {language, changeLanguage} = useContext(LanguageContext)
+    console.log(language);
+    const {email, password, remember, signIn, forgotPaswd, askSignUp} = words[language]
 
-    handleChange = (e)=>{
-        this.setState(st=>({
-            language: e.target.value
-        }))
-        this.context.changeLanguage(e.target.value)
-    }
-    render() {
-        const handleSubmit = (event) => {
-          event.preventDefault();
-          const data = new FormData(event.currentTarget);
-          // eslint-disable-next-line no-console
-          console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-          });
-        };
-        // console.log(this.context);
-        const {language} = this.context
-        const {email, password, remember, signIn, forgotPaswd, askSignUp} = words[language]
-
-        return (
-            <Container component="main" maxWidth="xs">
+    return (
+        <Container component="main" maxWidth="xs">
               <Paper elevation={3} sx={{bgcolor:'white', px:3, pb:2}}>
                 <CssBaseline />
                 <Box
@@ -97,9 +76,9 @@ class Form extends Component {
                             <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            value={this.state.language}
+                            value={language}
                             label="Language"
-                            onChange={this.handleChange}
+                            onChange={e=>changeLanguage(e.target.value)}
                             >
                             <MenuItem value='english'>English</MenuItem>
                             <MenuItem value='french'>French</MenuItem>
@@ -108,7 +87,7 @@ class Form extends Component {
                         </FormControl>
                     </Box>
 
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form"  noValidate sx={{ mt: 1 }}>
                     <TextField
                         margin="normal"
                         required
@@ -158,9 +137,8 @@ class Form extends Component {
 
               </Paper>
             </Container>
-        );
-        
-    }
+    )
 }
+
 
 export default Form
