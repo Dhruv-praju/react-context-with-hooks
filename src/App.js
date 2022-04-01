@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import React from 'react'
 import './App.css';
 import Button from '@mui/material/Button'
 import Navbar from './Navbar';
@@ -7,8 +7,7 @@ import PageContent from './PageContent';
 import {ThemeProvider} from './contexts/ThemeContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
-class App extends Component{
-  render() {
+function App(){
     return (
       <div className='App'>
         <ThemeProvider>
@@ -21,7 +20,6 @@ class App extends Component{
         </ThemeProvider>
       </div>
     )
-  }
 }
 
 export default App;
